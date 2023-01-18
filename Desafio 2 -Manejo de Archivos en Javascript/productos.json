@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Escuadra",
+    "price": 100,
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Squadra_45.jpg/330px-Squadra_45.jpg",
+    "id": 1
+  },
+  {
+    "title": "Corrector",
+    "price": 300,
+    "thumbnail": "https://www.librerialarubrica.com/wp-content/uploads/2020/03/corrector-liquid-paper-lapiz-lapicera-7ml-paper-mate-main.jpg",
+    "id": 2
+  },
+  {
+    "title": "Lapiz",
+    "price": 100,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_762219-MLA40198251558_122019-W.jpg",
+    "id": 3
+  }
+]

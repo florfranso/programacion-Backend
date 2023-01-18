@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Lapiz",
+    "price": "50",
+    "thumbnail": "https://st.depositphotos.com/1741875/1378/i/450/depositphotos_13784614-stock-photo-pencil-isolated-on-pure-white.jpg",
+    "id": 1
+  },
+  {
+    "title": "Lapicera",
+    "price": "100",
+    "thumbnail": "https://www.bikabik.com.ar/wp-content/uploads/2020/07/boligrafo-bic-azul-trazo-grueso-1mm-opaco-x50-unid-D_NQ_NP_897138-MLA31037651428_062019-F-min.jpg",
+    "id": 2
+  },
+  {
+    "title": "Transportador",
+    "price": "120",
+    "thumbnail": "https://img.freepik.com/vector-gratis/regla-transportadora-aislada-plantilla-vector-fondo-blanco-escala-medicion-grado-angulo_145391-1064.jpg?w=2000",
+    "id": 3
+  },
+  {
+    "title": "Regla",
+    "price": "300",
+    "thumbnail": "https://img.freepik.com/vector-premium/regla-vector-estilo-plano_505913-532.jpg?w=2000",
+    "id": 4
+  },
+  {
+    "title": "",
+    "price": "",
+    "thumbnail": "",
+    "id": 5
+  },
+  {
+    "title": "lapicera",
+    "price": "200",
+    "thumbnail": "https://m.media-amazon.com/images/I/81swMFz35FS._AC_UY1000_.jpg",
+    "id": 6
+  },
+  {
+    "title": "mantel ",
+    "price": "500",
+    "thumbnail": "https://pixabay.com/es/photos/cereal-desayuno-comida-pl%c3%a1tano-898073/",
+    "id": 7
+  }
+]

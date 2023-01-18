@@ -1,0 +1,24 @@
+<% if(products.length) {%>
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imagen</th>
+            </tr>
+        </thead>
+        <% products.forEach(product=> {%>       
+            <tbody> 
+                <tr>
+                    <th scope="row"><%= product.id %></th>
+                    <td><%= product.title %></td>
+                    <td><%= product.price %></td>
+                    <td><img src="<%= product.thumbnail %>" width="100"></td>
+                </tr>       
+            </tbody>
+        <% }) %>
+    </table>
+<% } else { %>
+    <p class="m-5 fs-2 text-center">No hay productos</p>
+<% } %>

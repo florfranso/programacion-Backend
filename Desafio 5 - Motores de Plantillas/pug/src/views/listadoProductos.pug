@@ -1,0 +1,22 @@
+extends index.pug
+
+block listadoProductos
+    h2(class="m-3 display-1 text-primary text-center") Vista de Productos
+    table(class="table text-center")
+        thead
+            tr
+                th(scope="col") ID
+                th(scope="col") Producto
+                th(scope="col") Precio
+                th(scope="col") Imagen
+            tr
+        tbody
+            each obj in products 
+                    tr
+                        th(scope="row")=obj.id
+                        td=obj.title
+                        td=obj.price
+                        td
+                            img(src=obj.thumbnail alt="" width="100")
+    form(class="text-center" action="http://localhost:8080")
+        button(type="submit" class="btn btn-primary m-3 mt-0") Agregar Producto

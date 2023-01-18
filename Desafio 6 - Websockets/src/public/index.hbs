@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <title>Productos</title>
+</head>
+
+<body>
+    <h1 class="m-3 display-1 text-primary text-center">Ingrese Producto</h1>
+    <form id="formProductos" class="m-3">
+        <div class="mb-3">
+            <label for="inputNombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="inputNombre" placeholder="Lapicera" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="inputPrecio" class="form-label">Precio</label>
+            <input type="number" class="form-control" id="inputPrecio" placeholder="200" name="price" required>
+        </div>
+        <div class="mb-3">
+            <label for="inputFotoURL" class="form-label">Foto URL</label>
+            <input type="url" class="form-control" id="inputFotoURL" placeholder="https://http2.mlstatic.com/lapicera"
+                name="thumbnail" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+        </div>
+    </form>
+    {{{body}}}
+    <h2 class="m-3 display-1 text-primary text-center">Centro de Mensajes</h2>
+    <form id="formMessages" class="m-3">
+        <div class="mb-3" id="poolMessages"></div>
+        <div class="mb-3">
+            <label for="inputUsername" class="form-label">Usuario (e-mail)</label>
+            <input type="email" class="form-control" id="inputUsername" placeholder="guillermo@gmail.com" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="inputMessage" class="form-label">Mensaje</label>
+            <input type="text" class="form-control" id="inputMessage" placeholder="Hola!" name="message" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+        </div>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./products.socket.js"></script>
+    <script src="./messages.socket.js"></script>
+</body>
+
+</html>

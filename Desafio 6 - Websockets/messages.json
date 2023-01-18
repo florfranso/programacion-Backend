@@ -1,0 +1,38 @@
+[
+  {
+    "username": "g_marianacci@hotmail.com",
+    "message": "Hola!",
+    "date": "26/12/2022, 12:14:59",
+    "id": 1
+  },
+  {
+    "username": "julieta@gmail.com",
+    "message": "Hola! Como estan?",
+    "date": "26/12/2022, 12:15:11",
+    "id": 2
+  },
+  {
+    "username": "martin@gmail.com",
+    "message": "Hola! Buenas tardes a todos",
+    "date": "26/12/2022, 12:15:48",
+    "id": 3
+  },
+  {
+    "username": "pedro@gmail.com",
+    "message": "Hola!!!",
+    "date": "26/12/2022, 12:26:25",
+    "id": 4
+  },
+  {
+    "username": "pedro@gmail.com",
+    "message": "Buenas tardes!",
+    "date": "26/12/2022, 12:26:48",
+    "id": 5
+  },
+  {
+    "username": "flor.franso@live.com",
+    "message": "buenas noches",
+    "date": "26/12/2022, 20:58:43",
+    "id": 6
+  }
+]

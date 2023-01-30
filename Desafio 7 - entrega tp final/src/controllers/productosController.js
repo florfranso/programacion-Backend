@@ -77,6 +77,8 @@ const obtenerProdById = async (req, res) => {
 
 const agregarProducto = async (req, res) => {
     const { name, id, description, code, url, price, stock } = req.body
+    //let id;
+    productos.length === 0? id = 1 : id = productos[productos.length - 1].id + 1 
     const date = getTime()
     productos.push({ name, id, description, code, url, price, stock, date })
     res.json(productos)

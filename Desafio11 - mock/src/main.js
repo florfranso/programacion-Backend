@@ -23,8 +23,8 @@ const mensajesApi = new ContenedorArchivo(`${config.fileSystem.path}/mensajes.js
 import { normalize, schema, denormalize } from 'normalizr'
 import util from 'util'
 
-//import ContenedorMensajes from '../src/contenedores/ContenedorArchivo.js'
-//const mensajes = new ContenedorMensajes ('../DB/mensajes.json')
+import ContenedorMensajes from '../src/contenedores/ContenedorArchivo.js'
+const mensaje = new ContenedorMensajes ('../DB/mensajes.json')
 
 function print(objeto) {
     console.log(util.ispect(objeto, false, 12, true));
@@ -76,13 +76,13 @@ io.on('connection', async socket => {
 })
 // actualizacion de productos
 
-socket.on("new-message", async data => {
+io.on("new-message", async data => {
     // carga inicial de mensajes
     try {
-        await mensajes.save(data)
-        const listaMensajes = await mensajes.getAll();
+        await mensaje.save(data)
+        const listaMensajes = await mensajesApi.getAll();
         const dataNormalizada = normalizarMensajes(listaMensajes)
-        socket.emit('mensajes, dataNormalizada')
+        io.emit('mensaje, dataNormalizada')
     } catch (error) {
         console.log("Error al normalizar: ", error)
     }
@@ -90,7 +90,7 @@ socket.on("new-message", async data => {
     // actualizacion de mensajes
     mensajes.getAll()
         .then((res) => {
-            socket.emit('mensajes', res)
+            io.emit('mensaje', res)
         })
 });
 

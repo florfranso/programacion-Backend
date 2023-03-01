@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "trek",
+        "precio": "9000",
+        "foto": "https://www.trekbikes.com",
+        "id": 1
+    },
+    {
+        "nombre": "Specialized",
+        "precio": "11000",
+        "foto": "https://www.specialized.com",
+        "id": 2
+    },
+    {
+        "nombre": "Canyon",
+        "precio": "14000",
+        "foto": "https://www.canyon.com",
+        "id": 3
+    }
+]

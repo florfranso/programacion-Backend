@@ -1,90 +1,126 @@
 import { promises as fs } from 'fs'
 //const fs = require('fs').promises
 
-class ContenedorArchivo {
-
-    constructor(ruta) {
-        this.ruta = ruta;
+class Contenedor {
+    constructor (path) {
+        this.fileName = path;
     }
 
-    async listar(id) {
+    async guardar (producto) {
         try {
-            const leer = await fs.readFile(this.path, "utf-8")
-            const data = JSON.parse(leer)
-            const obj = data.find(obj => obj.id === id);
-            if (!obj) {
-                return null
+            let dataSinJSON = await fs.readFile(this.fileName, 'utf-8');
+            const data = JSON.parse(dataSinJSON);
+            let idUltimo;
+            data.length === 0 ? idUltimo = 0 : idUltimo = (data[data.length-1].id);
+            const idNuevo = idUltimo + 1;
+            producto.id = idNuevo;
+            data.push(producto);
+
+            await fs.writeFile(this.fileName, JSON.stringify(data, null, 2), 'utf-8');
+            
+            let nuevaRawData = await fs.readFile(this.fileName, 'utf-8');
+            const nuevaData = JSON.parse(nuevaRawData);
+            console.log("Producto guardado con éxito. Éste es el nuevo listado: ", nuevaData);
+            console.log("El id del nuevo producto es: ", idNuevo);
+            return idNuevo;
+        }
+        catch (err) {
+            console.log("Error al escribir: " + err);
+        }
+    }
+    
+    async listarAll () {
+        try {
+            const rawData = await fs.readFile(this.fileName, 'utf-8');
+            const data = JSON.parse(rawData);
+            console.log(data);
+            return data;
+        }
+        catch (err) {
+            console.log("Error al leer el archivo: " + err);
+        }
+
+    }
+
+    async borrarAll () {
+        try {
+            await fs.writeFile(this.fileName, JSON.stringify([], null, 2), 'utf-8');
+            console.log("El archivo fue borrado íntegramente.");
+            return;
+        }
+        catch (err) {
+            console.log("Error al borrar todo el archivo: " + err);
+        }
+    }
+
+    async borrar (num) {
+        try {
+            let dataSinJSON = await fs.readFile(this.fileName, 'utf-8');
+            const data = JSON.parse(dataSinJSON);
+            const prodAConservar = data.filter(prod => prod.id !== num);
+            await fs.writeFile(this.fileName, JSON.stringify(prodAConservar, null, 2),'utf-8');
+            console.log("El producto fue eliminado correctamente.");
+            return;
+        }
+        catch (err) {
+            console.log("Error al traer por ID: " + err);
+        }
+    }
+
+    async listar (num) {
+        try {
+            let dataSinJSON = await fs.readFile(this.fileName, 'utf-8');
+            const data = JSON.parse(dataSinJSON);
+            const prodFiltrado = data.filter(prod => prod.id === num);
+            if (prodFiltrado.length > 0) {
+                console.log("El producto consultado es el siguiente: ", prodFiltrado)
+                return prodFiltrado;
             }
-            return obj
-        } catch (e) {
-            console.log(e)
+            else {
+                console.log("El producto no se encuentra: ", null);
+                return null;
+            }
+        }
+        catch (err) {
+            console.log("Error al traer por ID: " + err);
         }
     }
 
-    async listarAll() {
+    async actualizar (id, nuevaInfo) {
         try {
-            const leer = await fs.readFile(this.path, "utf-8")
-            return JSON.parse(leer)
-        } catch (e) {
-            console.log(e)
+            let dataSinJSON = await fs.readFile(this.fileName, 'utf-8');
+            const data = JSON.parse(dataSinJSON);
+            let prodFiltrado = data.filter(prod => prod.id === id);
+            const indice = data.findIndex(element => element.id === id);
+            data[indice] = {
+                id: id,
+                title: nuevaInfo.title || data[indice].title,
+                price: nuevaInfo.price || data[indice].price,
+                thumbnail: nuevaInfo.thumbnail || data[indice].thumbnail
+            }
+            await fs.writeFile(this.fileName, JSON.stringify(data, null, 2),'utf-8');
+        }
+        catch (err) {
+            console.log("Error al modificar un producto: " + err);
         }
     }
 
-    async guardar(objeto) {
-        try {
-            const leer = await fs.readFile(this.path, "utf-8");
-            const data = JSON.parse(leer)
-            let id;
-            data.length === 0
-                ? (id = 1)
-                : (id = data[data.length - 1].id + 1);
-            const newProduct = { ...objeto, id };
-            data.push(newProduct);
-            await fs.writeFile(this.path, JSON.stringify(data, null, 2), "utf-8")
-            return newProduct.id;
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    async actualizar(elem) {
-        let objs = await this.getAll();
-		try {
-			const obj = objs.find(obj => obj.id == id);
-			if (obj) {
-				const index = objs.indexOf(obj);
-				const { title, price, thumbnail } = elem;
-				objs[index]['title'] = title;
-				objs[index]['price'] = price;
-				objs[index]['thumbnail'] = thumbnail;
-				await this.writeFile(objs);
-				return true;
-			}
-		} catch (error) {
-			console.log(error.message);
-		}
-    }
-
-    async borrar(id) {
-        try {
-            const leer = await fs.readFile(this.path, "utf-8")
-            const data = JSON.parse(leer)
-            const obj = data.find(obj => obj.id !== id);
-            await fs.writeFile(this.path, JSON.stringify(obj, null, 2), "utf-8")
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    async borrarAll() {
-        try {
-            await fs.writeFile(this.path, JSON.stringify([], null, 2), "utf-8")
-        } catch (e) {
-            console.log(e);
-        }
-    };
 }
 
+const productos = new Contenedor ('./productos.json');
 
-export default ContenedorArchivo
+
+module.exports = Contenedor;
+
+
+
+
+
+
+
+   
+    
+
+  
+
+    

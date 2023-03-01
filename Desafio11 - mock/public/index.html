@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Ingreso de Productos</title>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
         integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -46,6 +47,22 @@
             </form>
             <br>
             <div id="productos"></div>
+
+             <!-- Sector listar productos -->
+             <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Imagen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaProductos"></tbody>
+                </table>
+            </div>
+
         </div>
 
         <div class="jumbotron">
@@ -62,7 +79,6 @@
 
             <hr>
 
-            <div id="mensajes"></div>
 
             <form id="formPublicarMensaje" class="form-inline" autocomplete="off">
                 <div class="form-group">
@@ -74,6 +90,7 @@
         </div>
     </div>
 
+    <div id="mensajes"></div>
     <script src="js/main.js"></script>
 
 </body>

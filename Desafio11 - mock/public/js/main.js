@@ -5,14 +5,29 @@ const socket = io.connect();
 const formAgregarProducto = document.getElementById('formAgregarProducto')
 formAgregarProducto.addEventListener('submit', e => {
     e.preventDefault()
-    const producto = {
-        title: formAgregarProducto[0].value,
-        price: formAgregarProducto[1].value,
-        thumbnail: formAgregarProducto[2].value
+
+    const name = document.getElementById('nombre').value
+    const price = document.getElementById('precio').value
+    const url = document.getElementById('foto').value
+
+    const nuevoProducto = {
+        name: name,
+        price: price,
+        url: url
     }
-    socket.emit('update', producto);
-    formAgregarProducto.reset()
+
+    socket.emit('nuevoProducto', nuevoProducto);
+
+    /* const producto = {
+         title: formAgregarProducto[0].value,
+         price: formAgregarProducto[1].value,
+         thumbnail: formAgregarProducto[2].value
+     }
+     socket.emit('update', producto);
+     formAgregarProducto.reset()*/
 })
+
+
 
 socket.on('productos', productos => {
     makeHtmlTable(productos).then(html => {
@@ -36,12 +51,17 @@ function makeHtmlTable(productos) {
 
 /* --------------------- DESNORMALIZACIÓN DE MENSAJES ---------------------------- */
 // Definimos un esquema de autor
-
+const author = new normalizr.schema.Entity('authors', {}, { idAttribute: "email" })
 
 // Definimos un esquema de mensaje
-
+const mensaje = new normalizr.schema.Entity('text', {
+    author: author
+})
 
 // Definimos un esquema de posts
+const schemaMensajes = new normalizr.schema.Entity('posts', {
+    mensajes: [mensaje]
+})
 
 /* ----------------------------------------------------------------------------- */
 
@@ -53,22 +73,42 @@ const formPublicarMensaje = document.getElementById('formPublicarMensaje')
 formPublicarMensaje.addEventListener('submit', e => {
     e.preventDefault()
 
-    const mensaje = {
-        author: {
-            email: inputUsername.value,
-            nombre: document.getElementById('firstname').value,
-            apellido: document.getElementById('lastname').value,
-            edad: document.getElementById('age').value,
-            alias: document.getElementById('alias').value,
-            avatar: document.getElementById('avatar').value
-        },
-        text: inputMensaje.value
-    }
+    /*const mensaje = {
+         author: {
+             email: inputUsername.value,
+             nombre: document.getElementById('firstname').value,
+             apellido: document.getElementById('lastname').value,
+             edad: document.getElementById('age').value,
+             alias: document.getElementById('alias').value,
+             avatar: document.getElementById('avatar').value
+             
+         },
+         text: inputMensaje.value*/
+    const email = document.getElementById('inputUsername').value
+    const message = document.getElementById('inputMensaje').value
+    const firstName = document.getElementById('firstname').value
+    const lastName = document.getElementById('lastname').value
+    const age = document.getElementById('age').value
+    const alias = document.getElementById('alias').value
+    const avatar = document.getElementById('avatar').value
 
-    socket.emit('nuevoMensaje', mensaje);
-    formPublicarMensaje.reset()
+    const nuevoMensaje = {
+        author: {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            age: age,
+            alias: alias,
+            avatar: avatar
+        },
+        text: message
+    }
+    socket.emit('nuevoMensaje', nuevoMensaje),
+    formPublicarMensaje.reset(),
     inputMensaje.focus()
+    
 })
+
 
 socket.on('mensajes', mensajesN => {
 

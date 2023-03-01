@@ -1,10 +1,15 @@
 import express from 'express'
-
 import { Server as HttpServer } from 'http'
 import { Server as Socket } from 'socket.io'
+//normalizar msj
+import { normalize, schema, denormalize } from 'normalizr'
+import util from 'util'
 
-import ContenedorSQL from './contenedores/ContenedorSQL.js'
-import ContenedorArchivo from './contenedores/ContenedorArchivo.js'
+import faker from 'faker'
+faker.locale = 'es'
+
+import ContenedorDB from './contenedores/contenedorDB.js'
+import ContenedorMemoria from './contenedores/ContenedorMemoria.js'
 
 import config from './config.js'
 
@@ -15,29 +20,47 @@ const app = express()
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
 
-const productosApi = new ContenedorSQL(config.mariaDb, 'productos')
-const mensajesApi = new ContenedorArchivo(`${config.fileSystem.path}/mensajes.json`)
+const productosApi = new ContenedorDB(config.mysql, 'productos')
+const mensajesApi = new ContenedorMemoria('./contenedores/mensajes.json')
+
+//--------------------------------------------
+// configuro el socket
+
+io.on('connection', socket => {
+    console.log('Nuevo cliente conectado!');
+
+    // carga inicial de productos
+    socket.on('nuevoProducto', data => {
+        productosApi.save(data)
+        .then(()=>{
+            productosApi.getAll()
+                .then((res) => {
+                socket.emit('productos', res) 
+            })
+        })
+    })
+
+    productosApi.getAll()
+        .then((res) => {
+            socket.emit('productos', res)
+        })
+
 
 //--------------------------------------------
 // NORMALIZACIÓN DE MENSAJES
-import { normalize, schema, denormalize } from 'normalizr'
-import util from 'util'
-
-import ContenedorMensajes from '../src/contenedores/ContenedorArchivo.js'
-const mensaje = new ContenedorMensajes ('../DB/mensajes.json')
 
 function print(objeto) {
     console.log(util.ispect(objeto, false, 12, true));
 }
 
 // Definimos un esquema de autor
-const autor = new schema.Entity('autor', {},
+const author = new schema.Entity('autor', {},
     { idAttribute: 'email' }
 )
 
 // Definimos un esquema de mensaje
-const mensajes = new schema.Entity('mensajes', {
-    autor: autor
+const mensajes = new schema.Entity('text', {
+    autor: author
 })
 
 // Definimos un esquema de posts
@@ -54,43 +77,24 @@ function normalizarMensajes(mens) {
 
 }
 
-//--------------------------------------------
-// configuro el socket
 
-io.on('connection', async socket => {
-    console.log('Nuevo cliente conectado!');
-
-    // carga inicial de productos
-
-    try {
-
-        const listaProductos = await productosApi.getAll();
-        socket.emit("new-connection", listaProductos);
-        socket.on("new-product", data => {
-            productosApi.save(data);
-            io.sockets.emit("producto", data);
-        });
-    } catch (error) {
-        console.log("error", error);
-    }
-})
-// actualizacion de productos
 
 io.on("new-message", async data => {
     // carga inicial de mensajes
     try {
-        await mensaje.save(data)
+        await mensajesApi.save(data)
         const listaMensajes = await mensajesApi.getAll();
         const dataNormalizada = normalizarMensajes(listaMensajes)
-        io.emit('mensaje, dataNormalizada')
+        io.emit('mensaje', dataNormalizada)
     } catch (error) {
         console.log("Error al normalizar: ", error)
     }
+})
 
     // actualizacion de mensajes
-    mensajes.getAll()
+    mensajesApi.getAll()
         .then((res) => {
-            io.emit('mensaje', res)
+            io.emit('mensajes', res)
         })
 });
 
@@ -101,13 +105,9 @@ io.on("new-message", async data => {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
+app.use ('/', express.static('../public'))
 
-//--------------------------------------------
-
-import faker from 'faker'
-faker.locale = 'es'
-
+//-------------------------------------------
 function creaCombinacionesRandom() {
     return {
         producto: faker.commerce.productName(),

@@ -6,8 +6,8 @@ const options = {
         connection:{
             host:"127.0.0.1",
             user:"root",
-            password:"",
-            database:"corderhousedb"
+            //password:"",
+            database:"MiPrimerDB"
         }
     },
     sqliteDB:{
@@ -18,7 +18,7 @@ const options = {
         useNullAsDefault:true
     },
     mongoDB:{
-        mongoUrlSessions:"mongodb+srv://fredy:coder@coderbackend.d0kaklh.mongodb.net/sessionsDB?retryWrites=true&w=majority"
+        mongoUrlSessions:"mongodb+srv://coder_c20:coder_c20_pwd@cluster0.jo23qoz.mongodb.net/sessionsDB?retryWrites=true&w=majority"
     }
 }
 

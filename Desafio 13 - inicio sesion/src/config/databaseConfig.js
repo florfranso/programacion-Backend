@@ -15,7 +15,7 @@ const options = {
     sqliteDB:{
         client:"sqlite",
         connection:{
-            filename:path.join(__dirname, "../DB/chatdb.sqlite")
+            filename:path.join("../DB/chatdb.sqlite")
         },
         useNullAsDefault:true
     },
@@ -25,4 +25,4 @@ const options = {
 }
 
 //module.exports = {options};
-export default {options};
+export default options;

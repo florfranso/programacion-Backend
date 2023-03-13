@@ -14,7 +14,7 @@ router.post("/login",(req,res)=>{
         res.render("login",{error:"POR FAVOR INGRESE EL NOMBRE"})
     }
 });*/
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     const { nombre, password } = req.body
 
     //const existeUsuario = usuariosDB.find(usuario => usuario.nombre == nombre && usuario.password == password)
@@ -28,7 +28,7 @@ app.post('/login', (req, res) => {
     }
 })
 
-app.get('/home', (req, res) => {
+router.get('/home', (req, res) => {
     if (req.session.nombre) {
         req.session.contador++
 
@@ -44,7 +44,7 @@ app.get('/home', (req, res) => {
     }
 })
 
-app.post('/register', (req, res) => {
+router.post('/register', (req, res) => {
     const { nombre, password, direccion } = req.body;
 
     const usuario = usuariosDB.find(usr => usr.nombre == nombre)

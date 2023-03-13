@@ -1,5 +1,7 @@
-const express = require('express');
-const Contenedor = require("../containers/contenedorProductos");
+//const express = require('express');
+import express from 'express'
+//const Contenedor = require("../containers/contenedorProductos");
+import Contenedor from '../containers/contenedorProductos.js';
 
 const router = express.Router();
 
@@ -41,4 +43,5 @@ router.delete('/:id',async(req,res)=>{
     res.send(result);
 })
 
-module.exports = {productsRouter:router};
+//module.exports = {productsRouter:router};
+export default {productsRouter: router}

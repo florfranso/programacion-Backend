@@ -6,7 +6,7 @@ import path from 'path'
 
 export default class Contenedor{
     constructor(filename){
-        this.filename =path.join(__dirname,"..",`files/${filename}`);
+       // this.filename =path.join(__dirname,"..",`files/${filename}`);
     }
 
     save = async(product)=>{

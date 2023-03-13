@@ -21,14 +21,14 @@ app.use(express.static('src/public'));
 
 //routers
 //const {productsRouter} = require('./routes/poducts.js');
-import {productsRouter} from './routes/poducts.js';
+import productsRouter from './routes/poducts.js';
 //const {WebRouter} = require("./routes/webRoutes");
-import {WebRouter} from './routes/webRoutes.js';
+import WebRouter from './routes/webRoutes.js';
 //const {AuthRouter} = require("./routes/authRouter");
-import {AuthRouter} from './routes/authRouter.js'
+import AuthRouter from './routes/authRouter.js'
 
 //const {options} = require("./config/databaseConfig");
-import {options} from './config/databaseConfig.js';
+import options from './config/databaseConfig.js';
 //const cookieParser = require("cookie-parser");
 import cookieParser from 'cookie-parser';
 //const MongoStore = require("connect-mongo");

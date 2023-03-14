@@ -33,4 +33,4 @@ router.get('/register', (req, res)=>{
 })
 
 //module.exports ={WebRouter:router};
-export default {WebRouter:router}
+export default router;

@@ -44,4 +44,6 @@ router.delete('/:id',async(req,res)=>{
 })
 
 //module.exports = {productsRouter:router};
-export default {productsRouter: router}
+//export default {productsRouter: router}
+
+export default router;

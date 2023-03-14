@@ -68,4 +68,4 @@ router.get("/logout",(req,res)=>{
     })
 });
 
-export default {AuthRouter:router};
+export default router;

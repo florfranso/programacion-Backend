@@ -20,7 +20,7 @@ router.post('/login', (req, res) => {
     //const existeUsuario = usuariosDB.find(usuario => usuario.nombre == nombre && usuario.password == password)
 
     if (!existeUsuario) {
-        res.render('login-error.hbs')
+        res.render('login-error.handlebars')
     } else {
         req.session.nombre = nombre;
 
@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
 
 router.get('/home', (req, res) => {
     if (req.session.nombre) {
-        req.session.contador++
+
 
         const datosUsuario = usuariosDB.find(usuario => {
             return usuario.nombre == req.session.nombre
@@ -50,7 +50,7 @@ router.post('/register', (req, res) => {
     const usuario = usuariosDB.find(usr => usr.nombre == nombre)
 
     if (usuario) {
-        res.render('registro-error.hbs')
+        res.render('registro-error.handlebars')
     } else {
         usuariosDB.push({ nombre, password, direccion })
         res.render('login')

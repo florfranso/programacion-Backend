@@ -2,6 +2,8 @@
     <h1>home</h1>
     <h2>Bienvenido {{username}}
         <button onclick="location.href='/api/auth/logout'">Cerrar sesion</button>
+        <button class="btn btn-danger my-5" onclick="location.href='/api/auth/logout'">CERRAR SESION</button>
+
     </h2>
     <div class="my-4" id="productsContainer"></div>
     <h2 class="text-primary">Centro de mensajes</h2>
@@ -12,14 +14,3 @@
 {{> importScripts}}
 
 
-
-<div class="container text-center my-3">
-    <div class="jumbotron" style="background-color: green;color: white;">
-        <h1>USER OK LOGIN!</h1>
-        <h2><i>Bienvenido {{datos.nombre}}</i></h2>
-        <br>
-        <h3>dirección: {{datos.direccion}}</h3>
-        <h4>visitas: {{contador}}</h4>
-        <button class="btn btn-danger my-5" onclick="location.href='/logout'">LOGOUT</button>
-    </div>
-</div>

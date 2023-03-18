@@ -5,15 +5,64 @@ import session from 'express-session'
 // require const handlebars = require('express-handlebars');
 import handlebars from 'express-handlebars'
 //para trabajar con hbs traer el path de la ruta raiz, es de node
+
 //para poder usar los archivos de las vistas
 import path from 'path'
+//libreria para encriptar contraseña
+import bycrypt from 'bcrypt';
 //variables de entorno
 import dotenv from 'dotenv';
 dotenv.config()
 
+//importo passport
+import passport from 'passport';
+import { Strategy } from 'passport-local';
+//constante de la estretegia que vamos a usar
+const LocalStrategy = Strategy;
 
 //server
 const app = express();
+
+/*----------- Passport -----------*/
+
+/*
+    Passport LocalStrategy, utiliza dos valores esperados llamados username y password, por lo que dentro del formulario 'login' debe contener estos dos imputs con su respectivo nombre.
+*/
+
+passport.use(new LocalStrategy(
+    async function (username, password, done) {
+        console.log(`${username} ${password}`)
+        //Logica para validar si un usuario existe
+        const existeUsuario = await usuariosDB.find(usuario => usuario.nombre == username);
+
+        console.log(existeUsuario);
+
+        if (!existeUsuario) {
+            return done(null, false);
+        } else {
+            const match = await verifyPass(existeUsuario, password)
+
+            if (!match) {
+                return done(null, false)
+            }
+            return done(null, existeUsuario);
+        }
+    }
+));
+
+passport.serializeUser((user, done) => {
+    return done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    const existeUsuario = usuariosDB.find(usuario => usuario.nombre == nombre);
+    done(null, existeUsuario);
+//UserModel.findById(id, (error,userFound)=>{
+    //return done (error, userFound)
+//})
+});
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('src/public'));
@@ -36,13 +85,13 @@ import MongoStore from 'connect-mongo';
 
 
 //configuracion template engine handlebars
-app.engine('handlebars', handlebars.engine({
+app.set('views', 'src/views');
+app.engine('.hbs', handlebars.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(app.get('views'), 'layouts'),
-    extname: 'handlebars'
+    extname: '.hbs'
 }));
-app.set('views', 'src/views');
-app.set('view engine', 'handlebars');
+app.set('view engine', '.hbs');
 
 
 //configuracion de la session
@@ -62,6 +111,8 @@ app.use(session({
     }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 //view routes
@@ -70,7 +121,6 @@ app.use(WebRouter);
 app.use('/api/products',productsRouter);
 app.use('/api/auth', AuthRouter);
 app.use('/logout', WebRouter)
-
 
 /*============================[Servidor]============================*/
 const PORT = process.env.PORT;
@@ -81,7 +131,3 @@ server.on('error', error => {
     console.error(`Error en el servidor ${error}`);
 });
 
-//express server
-/*const server = app.listen(8080,()=>{
-    console.log('listening on port 8080')
-})*/

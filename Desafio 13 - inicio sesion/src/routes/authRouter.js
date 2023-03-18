@@ -1,7 +1,28 @@
-//const express = require("express");
-import express from 'express'
+import express from 'express';
+import passport from 'passport';
+//import {Strategy as LocalStrategy} from 'passport-local';
+import { Strategy } from 'passport-local';
+//import { UserModel } from '../models/user.model';
 
-const router = express.Router();
+
+//constante de la estretegia que vamos a usar
+const LocalStrategy = Strategy;
+
+//serializacion y deserealizacion
+passport.serializeUser((user, done) => {
+    return done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    //verificamos si el usuario existe en la base de datos
+    UserModel.findById(id,(err,userDB)=>{
+        return done(err,userDB);
+    })
+}); 
+
+//crear estrategias para registrar a los usuarios
+
+const authRouter = express.Router();
 /*
 router.post("/login",(req,res)=>{
     const {name} = req.body;
@@ -14,13 +35,40 @@ router.post("/login",(req,res)=>{
         res.render("login",{error:"POR FAVOR INGRESE EL NOMBRE"})
     }
 });*/
-router.post('/login', (req, res) => {
+
+/*/*----------- Passport -----------*/
+
+/*
+    Passport LocalStrategy, utiliza dos valores esperados llamados username y password, por lo que dentro del formulario 'login' debe contener estos dos imputs con su respectivo nombre.
+*/
+/*
+passport.use(new LocalStrategy(
+    async function (username, password, done) {
+        console.log(`${username} ${password}`)
+        //Logica para validar si un usuario existe
+        const existeUsuario = await usuariosDB.find(usuario => usuario.nombre == username);
+
+        console.log(existeUsuario);
+
+        if (!existeUsuario) {
+            return done(null, false);
+        } else {
+            const match = await verifyPass(existeUsuario, password)
+
+            if (!match) {
+                return done(null, false)
+            }
+            return done(null, existeUsuario);
+        }
+    }
+));*/ 
+authRouter.post('/login', (req, res) => {
     const { nombre, password } = req.body
 
     //const existeUsuario = usuariosDB.find(usuario => usuario.nombre == nombre && usuario.password == password)
 
     if (!existeUsuario) {
-        res.render('login-error.handlebars')
+        res.render('login-error.hbs')
     } else {
         req.session.nombre = nombre;
 
@@ -28,7 +76,7 @@ router.post('/login', (req, res) => {
     }
 })
 
-router.get('/home', (req, res) => {
+authRouter.get('/home', (req, res) => {
     if (req.session.nombre) {
 
 
@@ -44,13 +92,13 @@ router.get('/home', (req, res) => {
     }
 })
 
-router.post('/register', (req, res) => {
+authRouter.post('/register', (req, res) => {
     const { nombre, password, direccion } = req.body;
 
     const usuario = usuariosDB.find(usr => usr.nombre == nombre)
 
     if (usuario) {
-        res.render('registro-error.handlebars')
+        res.render('registro-error.hbs')
     } else {
         usuariosDB.push({ nombre, password, direccion })
         res.render('login')
@@ -58,7 +106,7 @@ router.post('/register', (req, res) => {
 })
 
 
-router.get("/logout",(req,res)=>{
+authRouter.get("/logout",(req,res)=>{
     req.session.destroy((error)=>{
         if(error){
             res.redirect("/")
@@ -68,4 +116,4 @@ router.get("/logout",(req,res)=>{
     })
 });
 
-export default router;
+export default authRouter;

@@ -5,7 +5,6 @@ import handlebars from 'express-handlebars'
 //para poder usar los archivos de las vistas
 import path from 'path'
 //libreria para encriptar contraseña
-import bycrypt from 'bcrypt';
 import options from './config/databaseConfig.js';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
@@ -66,11 +65,8 @@ app.use(passport.session());
 
 
 //routers
-//const {productsRouter} = require('./routes/poducts.js');
 import productsRouter from './routes/poducts.js';
-//const {WebRouter} = require("./routes/webRoutes");
 import webRouter from './routes/webRoutes.js';
-//const {AuthRouter} = require("./routes/authRouter");
 import authRouter from './routes/authRouter.js'
 // routes
 //view routes
@@ -79,6 +75,7 @@ app.use(webRouter);
 app.use('/api/products',productsRouter);
 app.use('/api/auth', authRouter);
 app.use('/logout', webRouter)
+
 
 /*============================[Servidor]============================*/
 const PORT = process.env.PORT;

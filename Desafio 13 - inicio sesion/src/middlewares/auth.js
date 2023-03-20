@@ -1,6 +1,6 @@
 const checkLogged = (req,res,next)=>{
     //si el usuario tiene sesion activa
-    if(req.session.username){
+    if(req.isAuthenticated()){
         next();
     } else {
         res.redirect("/login");

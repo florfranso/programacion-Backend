@@ -3,17 +3,17 @@ import express from 'express'
 //const Contenedor = require("../containers/contenedorProductos");
 import Contenedor from '../containers/contenedorProductos.js';
 
-const router = express.Router();
+const productsRouter = express.Router();
 
 const productosApi = new Contenedor("productos.txt");
 
-router.get('/',async(req,res)=>{
+productsRouter.get('/',async(req,res)=>{
     const productos = await productosApi.getAll();
     res.send(productos);
 });
 
 
-router.get('/:id',async(req,res)=>{
+productsRouter.get('/:id',async(req,res)=>{
     const productId = req.params.id;
     const product = await productosApi.getById(parseInt(productId));
     if(product){
@@ -24,20 +24,20 @@ router.get('/:id',async(req,res)=>{
 })
 
 //POST /api/products/
-router.post('/',async(req,res)=>{
+productsRouter.post('/',async(req,res)=>{
     const newProduct = req.body;
     const result = await productosApi.save(newProduct);
     res.send(result);
 })
 
-router.put('/:id',async(req,res)=>{
+productsRouter.put('/:id',async(req,res)=>{
     const cambioObj = req.body;
     const productId = req.params.id;
     const result = await productosApi.updateById(parseInt(productId),cambioObj);
     res.send(result);
 })
 
-router.delete('/:id',async(req,res)=>{
+productsRouter.delete('/:id',async(req,res)=>{
     const productId = req.params.id;
     const result = await productosApi.deleteById(parseInt(productId));
     res.send(result);
@@ -46,4 +46,4 @@ router.delete('/:id',async(req,res)=>{
 //module.exports = {productsRouter:router};
 //export default {productsRouter: router}
 
-export default router;
+export default productsRouter;

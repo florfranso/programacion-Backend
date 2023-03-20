@@ -1,0 +1,15 @@
+
+<div class="container text-center my-3">
+    <div class="jumbotron" style="background-color: green;color: white;">
+        <h1>USER OK LOGIN!</h1>
+        <h2 class="mx-5 my-2">Datos del perfil</h2>
+        Bienvenido {{username}}
+        <h2><i>Bienvenido {{datos.name}}</i></h2>
+        <br>
+        <h3>email: {{datos.email}}</h3>
+        <button class="btn btn-danger my-5" onclick="location.href='/api/auth/logout'">LOGOUT</button>
+    </div>
+</div>
+
+{{!-- {contador, datos: {nombre, direccion}} --}}
+

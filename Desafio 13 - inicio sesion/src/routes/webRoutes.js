@@ -1,36 +1,44 @@
-//const express = require("express");
 import express from 'express';
-//const Contenedor = require("../containers/contenedorProductos");
 import Contenedor from "../containers/contenedorProductos.js";
-//const {checkLogged, userNotLogged} = require("../middlewares/auth");
 import { checkLogged ,userNotLogged } from '../middlewares/auth.js';
 
 //service
 const productosApi = new Contenedor("productos.txt");
 
-const router= express.Router();
+const webRouter= express.Router();
 
-router.get('/', checkLogged, (req,res)=>{
+webRouter.get('/', checkLogged, (req,res)=>{
     res.render('home',{username:req.session.username});
 });
 
 
-router.get('/productos',checkLogged,async(req,res)=>{
+webRouter.get('/productos',checkLogged,async(req,res)=>{
     res.render('products',{products: await productosApi.getAll()})
 });
 
-router.get("/login",userNotLogged,(req,res)=>{
+webRouter.get("/login",userNotLogged,(req,res)=>{
     res.render("login");
 });
 
 
-router.get('/logout', (req,res)=>{
+webRouter.get('/logout', (req,res)=>{
     res.render('logout',{username:req.session.username});
 });
 
-router.get('/register', (req, res)=>{
+webRouter.get('/register', (req, res)=>{
     res.render("registro");
 })
 
-//module.exports ={WebRouter:router};
-export default router;
+webRouter.get('/registro-error', (req,res)=>{
+    res.render('registro-error')
+})
+
+webRouter.get('/login-error', (req, res)=>{
+    res.render("login-error")
+})
+
+webRouter.get('/perfil',checkLogged ,(req, res)=>{
+    res.render("perfil")
+})
+
+export default webRouter;

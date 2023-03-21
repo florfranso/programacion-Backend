@@ -7,3 +7,31 @@
     <input class="form-control" type="url" name="thumbnail" id="thumbnail"/>
     <button type="submit" class="btn btn-info my-3">Agregar</button>
 </form>
+
+<div>
+    {{#if products}}
+    <h2>Productos</h2>
+        <table>
+            <thead>
+                <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imagen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>{{this.price}}</td>
+                    <td><img width="70" src={{this.thumbnail}}/></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div>
+            <p>No hay productos</p>
+        </div>
+    {{/if}}
+</div>

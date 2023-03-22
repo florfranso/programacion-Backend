@@ -106,32 +106,30 @@ passport.use(new LocalStrategy(
 ))
 
 
-
+/*
 authRouter.post("/login", (req, res) => {
     const { username } = req.body;
     if (username) {
         //crear la sesion
         req.session.username = username;
-        res.redirect("/");
+        res.redirect("/perfil");
     } else {
-        // res.json({error:"por favor ingresa el nombre"})
-        // res.render("login",{error:"POR FAVOR INGRESE EL NOMBRE"})
-        res.redirect('/login-error')
+        res.render('login-error')
     }
-});
+});*/
 
 
-/*authRouter.post('/login', passport.authenticate('local', {
+authRouter.post('/login', passport.authenticate('local', {
     successRedirect: '/perfil',
     failureRedirect: '/login-error'
 }));
-*/
+
 
 
 authRouter.get('/home', checkLogged, (req, res) => {
     const datosUsuario = {
         nombre: req.session.name,
-        email: req.session.direccion
+        email: req.session.email
     }
     res.render('home', { datos: datosUsuario });
 })

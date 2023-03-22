@@ -38,7 +38,7 @@ webRouter.get('/login-error', (req, res)=>{
 })
 
 webRouter.get('/perfil',checkLogged ,(req, res)=>{
-    res.render("perfil")
+    res.render("perfil", {username:req.session.username},{email:req.session.email})
 })
 
 export default webRouter;

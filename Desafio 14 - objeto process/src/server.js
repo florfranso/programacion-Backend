@@ -3,17 +3,26 @@ import session from 'express-session'
 import handlebars from 'express-handlebars'
 //para trabajar con hbs traer el path de la ruta raiz, es de node
 //para poder usar los archivos de las vistas
-import path from 'path'
+import path, { join } from 'path'
 //libreria para encriptar contraseña
 import options from './config/databaseConfig.js';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import minimist from 'minimist';
 //importo passport
 import passport from 'passport';
 //variables de entorno
 import dotenv from 'dotenv';
 dotenv.config()
+
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+//trabajo
+import randomRouter from './apis/routerRandom.js';
 
 
 mongoose.set('strictQuery', false);
@@ -31,6 +40,7 @@ app.use(express.urlencoded({extended:true})); //lectura de json desde un metodo 
 //archivos estaticos
 app.use(express.static('src/public')); //ruta carpeta publica
 
+app.use('/api', randomRouter) 
 
 //configuracion template engine handlebars
 app.set('views', 'src/views');
@@ -74,13 +84,21 @@ app.use(webRouter);
 //api routes
 app.use('/api/products',productsRouter);
 app.use('/api/auth', authRouter);
-app.use('/logout', webRouter)
+app.use('/logout', webRouter);
+app.use('/info', webRouter)
 
 
 /*============================[Servidor]============================*/
-const PORT = process.env.PORT;
-const server = app.listen(PORT, () => {
-    console.log(`Servidor escuchando en puerto ${PORT}`);
+//const PORT = process.env.PORT;
+
+let option = {
+    alias: {p: 'port'}, 
+    default: {p: 8080}
+}
+let port = minimist(process.argv.slice(2), option)
+
+const server = app.listen(port, () => {
+    console.log(`Servidor escuchando en puerto ${JSON.stringify(port.p)}`);
 })
 server.on('error', error => {
     console.error(`Error en el servidor ${error}`);

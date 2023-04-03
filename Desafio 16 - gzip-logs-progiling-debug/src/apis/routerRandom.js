@@ -3,7 +3,8 @@ const {Router} = express
 import {fork} from 'child_process';
 
 const randomRouter = new Router()
-const forkedProcess = fork('')
+//const forkedProcess = fork('')
+const forkedProcess = fork ('./randomNumbers.js')
 
 randomRouter.use(express.json())
 randomRouter.use(express.urlencoded({extended: true}))
@@ -13,9 +14,10 @@ randomRouter.get('/random', (req, res) => {
     forkedProcess.send(parseInt(numero.valor));
     forkedProcess.on('message', stringified => {
         console.log(stringified)
+        return stringified
     });
     res.send('Calculando numeros random en forked process')
     
 })
 
-export default randomRouter;
+export default randomRouter

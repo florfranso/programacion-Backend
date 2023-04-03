@@ -1,12 +1,20 @@
 import express from 'express';
 import Contenedor from "../containers/contenedorProductos.js";
 import { checkLogged ,userNotLogged } from '../middlewares/auth.js';
-import path  from 'path'
+import path  from 'path';
+
+import compression from 'compression';
+import os from 'os'
+const numCores = os.cpus().length
+import {logError} from '../loggers/index.js'
+
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+
 //service
 const productosApi = new Contenedor("productos.txt");
 
@@ -18,7 +26,11 @@ webRouter.get('/', checkLogged, (req,res)=>{
 
 
 webRouter.get('/productos',checkLogged,async(req,res)=>{
+   try {
     res.render('products',{products: await productosApi.getAll()})
+   } catch (error) {
+    logError(error.message)
+   } 
 });
 
 webRouter.get("/login",userNotLogged,(req,res)=>{
@@ -46,13 +58,10 @@ webRouter.get('/perfil',checkLogged ,(req, res)=>{
     res.render("perfil", {username:req.session.username},{email:req.session.email})
 })
 
-webRouter.get('/info', (req, res) => {
-    res.send(`<p>Argumentos de entrada: ${process.argv.slice(2)}</p><br><p>Sistema operativo: ${process.platform}</p><br><p>Versión de node: ${process.version}</p><br><p>Memoria total reservada: ${process.memoryUsage().rss}</p><br><p>Path de ejecucion: ${process.cwd()}</p><br><p>Process Id: ${process.pid}</p><br><p>Carpeta del proyecto: ${path.basename(__dirname)}</p><br><p>Número de procesadores presentes en el servidor: ${numCores}</p>`)
-})
-/*app.get('/info', compression(), (req, res) => {
+webRouter.get('/info', compression(), (req, res) => {
     console.log(`Argumentos de entrada: ${process.argv.slice(2)}\nSistema operativo: ${process.platform}\nVersión de node: ${process.version}\nMemoria total reservada: ${process.memoryUsage().rss}\nPath de ejecucion: ${process.cwd()}\nProcess Id: ${process.pid}\nCarpeta del proyecto: ${path.basename(__dirname)}\nNúmero de procesadores presentes en el servidor: ${numCores}`)
     
     res.send(`<p>Argumentos de entrada: ${process.argv.slice(2)}</p><br><p>Sistema operativo: ${process.platform}</p><br><p>Versión de node: ${process.version}</p><br><p>Memoria total reservada: ${process.memoryUsage().rss}</p><br><p>Path de ejecucion: ${process.cwd()}</p><br><p>Process Id: ${process.pid}</p><br><p>Carpeta del proyecto: ${path.basename(__dirname)}</p><br><p>Número de procesadores presentes en el servidor: ${numCores}</p>`)
-})*/
+})
 
 export default webRouter;

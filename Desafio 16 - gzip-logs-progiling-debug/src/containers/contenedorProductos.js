@@ -1,6 +1,4 @@
-//const fs = require("fs");
 import * as fs from 'fs';
-//const path = require("path");
 import path from 'path'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -9,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
-export default class Contenedor{
+class Contenedor{
     constructor(filename){
        this.filename =path.join(__dirname,"..",`files/${filename}`);
     }
@@ -99,4 +97,4 @@ export default class Contenedor{
 }
 
 //module.exports = Contenedor;
-//export default Contenedor;
+export default Contenedor;

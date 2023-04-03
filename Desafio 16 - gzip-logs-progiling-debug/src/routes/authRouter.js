@@ -24,15 +24,43 @@ async function verifyPass(usuario, password) {
     return match
 }
 
+async function addUser(usuario) {
+
+    try {
+        const user = usuario
+        const userSave = new UserModel(user);
+        const savedUser = await userSave.save();
+        console.log(savedUser, 'dentro de addUser()')
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function readUser(usuario) {
+    try {
+        const userRead = await model.UserModel.findOne({email: usuario})
+        console.log(userRead, 'leido desde DB mongo')
+        return userRead
+    } catch (error) {
+        
+    }
+}
+
 //serializacion y deserealizacion
 passport.serializeUser((user, done) => {
-    return done(null, user.id);
+    //return done(null, user.id);
+    return done(null, user.email);
+
 });
 
-passport.deserializeUser(async (id, done) => {
-    const existeUsuario = await readUser(id);
+passport.deserializeUser(async (email, done) => {
+    const existeUsuario = await readUser(email);
     done(null, existeUsuario)
 })
+
+/*passport.deserializeUser(async (id, done) => {
+    const existeUsuario = await readUser(id);
+    done(null, existeUsuario)
+})*/
 /*passport.deserializeUser((id, done) => {
     //verificamos si el usuario existe en la base de datos
     UserModel.findById(id, (err, userDB) => {
@@ -68,26 +96,7 @@ passport.deserializeUser(async (id, done) => {
             })
         })
     }))*/
-async function addUser(usuario) {
 
-    try {
-        const user = usuario
-        const userSave = new UserModel(user);
-        const savedUser = await userSave.save();
-        console.log(savedUser, 'dentro de addUser()')
-    } catch (error) {
-        console.log(error)
-    }
-}
-async function readUser(usuario) {
-    try {
-        const userRead = await model.UserModel.findOne({email: usuario})
-        console.log(userRead, 'leido desde DB mongo')
-        return userRead
-    } catch (error) {
-        
-    }
-}
 
 passport.use(new LocalStrategy(
     async function (username, password, done) {

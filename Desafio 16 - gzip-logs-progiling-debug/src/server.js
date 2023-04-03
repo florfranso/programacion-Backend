@@ -19,11 +19,17 @@ import cluster from 'cluster';
 import os from 'os'
 const numCores = os.cpus().length
 
+import {logInfo, logWarn, logError} from './loggers/index.js'
+import compression from 'compression';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+
+//const productosApi = new Contenedor('productos.json')
+
 
 //trabajo
 import randomRouter from './apis/routerRandom.js';
@@ -98,7 +104,15 @@ if (options.server.MODO === "CLUSTER" && cluster.isPrimary) {
     //configurar passport
     app.use(passport.initialize());//inicializar passport dentro de nuestro servidor
     app.use(passport.session());
-
+    //app.use(compression());
+    app.use((req, res, next) => {
+        logInfo(`${req.method} ${req.url}`)
+        next()
+    })
+    app.use('*', (req, res, next) => {
+        logWarn(`${req.method} ${req.originalUrl}- ruta no encontrada`)
+        next()
+    })
 
     // routes
     //view routes
@@ -110,7 +124,7 @@ if (options.server.MODO === "CLUSTER" && cluster.isPrimary) {
     app.use('/info', webRouter)
     app.use('/api', randomRouter)
 
-
+   
     /*============================[Servidor]============================*/
 
     /*let option = {

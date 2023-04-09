@@ -4,7 +4,7 @@ import {fork} from 'child_process';
 
 const randomRouter = new Router()
 //const forkedProcess = fork('')
-const forkedProcess = fork ('./randomNumbers.js')
+//const forkedProcess = fork ('./randomNumbers.js')
 
 randomRouter.use(express.json())
 randomRouter.use(express.urlencoded({extended: true}))

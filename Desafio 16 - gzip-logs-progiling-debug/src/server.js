@@ -61,6 +61,7 @@ if (options.server.MODO === "CLUSTER" && cluster.isPrimary) {
     });
 } else {
     //modo fork
+    //app.use(compression());
     const server = app.listen(PORT, () => {
         console.log(`Servidor escuchando en puerto ${JSON.stringify(PORT)} con el proceso ${process.pid}`);
     })
@@ -73,7 +74,7 @@ if (options.server.MODO === "CLUSTER" && cluster.isPrimary) {
     //archivos estaticos
     app.use(express.static('src/public')); //ruta carpeta publica
 
-
+    
     //configuracion template engine handlebars
     app.set('views', 'src/views');
     app.engine('.hbs', handlebars.engine({
@@ -104,7 +105,7 @@ if (options.server.MODO === "CLUSTER" && cluster.isPrimary) {
     //configurar passport
     app.use(passport.initialize());//inicializar passport dentro de nuestro servidor
     app.use(passport.session());
-    //app.use(compression());
+    app.use(compression());
     app.use((req, res, next) => {
         logInfo(`${req.method} ${req.url}`)
         next()

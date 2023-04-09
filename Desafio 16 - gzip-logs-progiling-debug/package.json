@@ -8,7 +8,7 @@
     "test": "node benchmarks.js",
     "create-tables": "node src/scripts/createTables.js",
     "start": "nodemon src/server.js",
-    "start-actest": "0x server.js"
+    "start-actest": "0x src/server.js"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,6 @@ import Contenedor from "../containers/contenedorProductos.js";
 import { checkLogged ,userNotLogged } from '../middlewares/auth.js';
 import path  from 'path';
 
-//import compression from 'compression';
 import os from 'os'
 const numCores = os.cpus().length
 import {logError} from '../loggers/index.js'

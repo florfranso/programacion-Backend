@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node benchmarks.js",
+    "test": "node src/benchmarks.js",
     "create-tables": "node src/scripts/createTables.js",
     "start": "nodemon src/server.js",
     "start-actest": "0x src/server.js"
